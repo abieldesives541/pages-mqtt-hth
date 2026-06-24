@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料索引 · 华体会知识库</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f8f6f0;
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            color: #2e2b27;
+            padding: 2rem 1rem;
+        }
+        .page {
+            max-width: 830px;
+            margin: 0 auto;
+        }
+
+        /* 卡片氛围 */
+        .content-card {
+            background: #fefcf8;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
+            padding: 2.2rem 2rem;
+            border: 1px solid #eeeae1;
+        }
+
+        /* 标题体系 */
+        h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            border-left: 5px solid #b7a48b;
+            padding-left: 1rem;
+            margin: 0 0 0.75rem 0;
+            color: #3f3a34;
+        }
+        .subhead {
+            color: #7a7066;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed #dad3c9;
+            padding-bottom: 0.85rem;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            font-weight: 500;
+            font-size: 1.25rem;
+            margin: 1.8rem 0 0.6rem 0;
+            color: #4d453e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1.1em;
+            background: #cabaac;
+            border-radius: 2px;
+        }
+
+        /* 目录感网格 */
+        .index-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.2rem 0 1rem 0;
+        }
+        .index-item {
+            background: #f4f0e9;
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            border-left: 4px solid #bdae9b;
+            font-size: 0.95rem;
+            transition: background 0.15s;
+        }
+        .index-item strong {
+            display: block;
+            font-weight: 500;
+            color: #3f3a34;
+            margin-bottom: 0.2rem;
+        }
+        .index-item span {
+            color: #6b6259;
+            font-size: 0.9rem;
+        }
+        .index-item:hover {
+            background: #ede8df;
+        }
+
+        /* 引用 / 提示框 */
+        .callout {
+            background: #efe9df;
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            margin: 1.8rem 0;
+            border-left: 6px solid #b7a48b;
+            color: #3f3932;
+            font-size: 0.95rem;
+        }
+        .callout strong {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+            color: #4f463e;
+        }
+        .info-box {
+            background: #f5f1ea;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            border: 1px solid #e3dcd1;
+            font-size: 0.93rem;
+        }
+        .info-box .label {
+            display: inline-block;
+            background: #d6cdbf;
+            color: #2f2a25;
+            font-size: 0.75rem;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            letter-spacing: 0.03em;
+            margin-right: 0.5rem;
+        }
+
+        /* 相关区 */
+        .related-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            margin: 1.2rem 0 0.4rem 0;
+        }
+        .related-tag {
+            background: #f0ece4;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            color: #4f473f;
+            border: 1px solid #e2d9cd;
+        }
+
+        /* 链接 */
+        a {
+            color: #7f6b56;
+            text-decoration: none;
+            border-bottom: 1px solid #d6cbbd;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        a:hover {
+            color: #4f3f30;
+            border-bottom-color: #9b8b79;
+        }
+
+        /* 段落 */
+        p {
+            margin: 0.85rem 0;
+        }
+        .faq-item {
+            margin: 1rem 0;
+            padding: 0.6rem 0 0.6rem 0.8rem;
+            border-left: 2px solid #dacebf;
+        }
+        .faq-item .q {
+            font-weight: 500;
+            color: #3f3a34;
+        }
+        .faq-item .a {
+            color: #5d554b;
+            margin-top: 0.2rem;
+            font-size: 0.95rem;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #e3dcd1;
+            margin: 1.8rem 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .content-card {
+                padding: 1.4rem 1.2rem;
+            }
+            .index-grid {
+                grid-template-columns: 1fr;
+                gap: 0.7rem;
+            }
+            h1 {
+                font-size: 1.6rem;
+                padding-left: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="content-card">
+
+        <h1>资料整理 · 华体会</h1>
+        <div class="subhead">基于公开信息与社区整理的索引页 · 结构参考 a0e508bcba971dfb</div>
+
+        <!-- 目录感布局：信息卡片网格 -->
+        <div class="index-grid">
+            <div class="index-item">
+                <strong>📁 平台概述</strong>
+                <span>背景、服务模式与定位</span>
+            </div>
+            <div class="index-item">
+                <strong>📁 使用指引</strong>
+                <span>常见操作、账号与权限</span>
+            </div>
+            <div class="index-item">
+                <strong>📁 协议说明</strong>
+                <span>MQTT 相关基础与连接</span>
+            </div>
+            <div class="index-item">
+                <strong>📁 维护日志</strong>
+                <span>更新记录与状态通知</span>
+            </div>
+        </div>
+
+        <!-- 介绍区：从资料整理角度切入 -->
+        <p>
+            这份页面旨在作为一份轻量的知识库入口，将围绕 <a href="https://mqtt-hth.com.cn">华体会</a> 的常见信息条目进行归纳。
+            内容来源包括官方公开页面、社区讨论以及技术文档摘录。如果你正在查找有关平台结构、连接配置或基础概念的资料，以下分类和提示或许能提供一些方向。
+        </p>
+
+        <!-- 说明区 / 引用块 -->
+        <div class="callout">
+            <strong>📌 说明 · 信息索引原则</strong>
+            本页所有条目均基于可查证的公开材料整理，不包含未授权的内部指引或商业承诺。
+            建议读者在参考具体技术参数或配置时，以 <a href="https://mqtt-hth.com.cn">华体会</a> 上发布的最新文档为准。
+        </div>
+
+        <h2>相关资料整理</h2>
+        <p>以下为根据讨论频率和实用性筛选的几个常见关注点，可用于快速定位感兴趣的方向：</p>
+
+        <div class="info-box">
+            <span class="label">连接</span> 设备与服务器的握手参数、端口及认证方式（参考官方 MQTT 文档）
+        </div>
+        <div class="info-box">
+            <span class="label">结构</span> 主题 (Topic) 设计建议、通配符使用及命名规范
+        </div>
+        <div class="info-box">
+            <span class="label">状态</span> 服务可用性监测、心跳机制与离线消息
+        </div>
+
+        <h2>常见问题摘要 (FAQ)</h2>
+        <div class="faq-item">
+            <div class="q">▸ 如何获取最新的接入地址？</div>
+            <div class="a">接入地址和相关端口通常在 <a href="https://mqtt-hth.com.cn">华体会</a> 的「连接指引」或「开发者」页面公布，建议定期检查更新日志。</div>
+        </div>
+        <div class="faq-item">
+            <div class="q">▸ 是否保留历史消息？</div>
+            <div class="a">消息保留策略取决于具体配置。部分主题可使用保留消息 (Retained Message) 功能，详细说明可在官方文档的消息质量章节找到。</div>
+        </div>
+        <div class="faq-item">
+            <div class="q">▸ 认证方式有哪些选择？</div>
+            <div class="a">支持用户名/密码与 Token 两种基础模式，部分场景可启用 TLS 加密。具体字段定义参考 <a href="https://mqtt-hth.com.cn">华体会</a> 的安全章节。</div>
+        </div>
+
+        <hr>
+
+        <!-- 提示区 -->
+        <div class="callout" style="border-left-color: #b3a187;">
+            <strong>💡 提示</strong>
+            本索引页仅作信息导航，不替代原站完整文档。在配置生产环境前，请务必阅读 <a href="https://mqtt-hth.com.cn">华体会</a> 上的正式说明与免责条款。
+        </div>
+
+        <!-- 相关信息区 -->
+        <h2>相关信息</h2>
+        <div class="related-row">
+            <span class="related-tag">协议 3.1.1 / 5.0</span>
+            <span class="related-tag">WebSocket 支持</span>
+            <span class="related-tag">QoS 0/1/2</span>
+            <span class="related-tag">TLS v1.2</span>
+            <span class="related-tag">保留消息</span>
+            <span class="related-tag">遗嘱消息</span>
+        </div>
+        <p style="margin-top: 0.8rem; font-size: 0.9rem; color: #6b6259;">
+            以上标签对应常见技术点，更完整的参数列表与示例请参考 <a href="https://mqtt-hth.com.cn">华体会</a> 的开发者资源。
+        </p>
+
+        <div style="margin-top: 2rem; border-top: 1px solid #ece5d9; padding-top: 0.8rem; font-size: 0.85rem; color: #817a70;">
+            <span>资料整理时间 · 参考版本 a0e508bcba971dfb</span><br>
+            <span style="display: inline-block; margin-top: 0.2rem;">内容基于公开信息汇编，页面本身不存储任何私密数据。</span>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

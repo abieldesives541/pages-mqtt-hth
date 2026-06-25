@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Space Holdem · 德州扑克游戏信息台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; }
+
+    body {
+      background: #f2f8fa;
+      color: #1e2b32;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.2rem;
+    }
+
+    .page {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    /* 主视觉 网格感 */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      align-items: center;
+      background: linear-gradient(145deg, #d7ecee 0%, #b6d9de 100%);
+      border-radius: 2.4rem;
+      padding: 2.4rem 2.8rem;
+      margin-bottom: 2.8rem;
+      box-shadow: 0 8px 20px rgba(30, 60, 70, 0.08);
+    }
+
+    .hero-content h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #10434b;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      color: #1d404a;
+      max-width: 36ch;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-card-symbol {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .mini-card {
+      aspect-ratio: 3 / 4;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(2px);
+      border-radius: 0.7rem;
+      box-shadow: 0 2px 4px rgba(0, 30, 30, 0.05);
+      border: 1px solid rgba(76, 130, 120, 0.2);
+    }
+
+    .mini-card:nth-child(1) { background: #1f7a7a22; border-color: #206f6f; }
+    .mini-card:nth-child(2) { background: #2c8b8b22; border-color: #247d7d; }
+    .mini-card:nth-child(3) { background: #3c9b9b11; }
+    .mini-card:nth-child(4) { background: #2b7f7f22; }
+    .mini-card:nth-child(5) { background: #37919133; }
+    .mini-card:nth-child(6) { background: #449e9e22; }
+
+    /* 信息卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .info-card {
+      background: #ffffffd9;
+      backdrop-filter: blur(2px);
+      border-radius: 1.6rem;
+      padding: 1.6rem 1.4rem;
+      box-shadow: 0 6px 14px rgba(40, 80, 80, 0.06);
+      border: 1px solid rgba(80, 150, 145, 0.15);
+      transition: transform 0.1s ease, box-shadow 0.2s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(40, 80, 70, 0.1);
+      border-color: #44a19b;
+    }
+
+    .info-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0c4b4f;
+      margin-bottom: 0.6rem;
+      border-left: 4px solid #349e9a;
+      padding-left: 0.6rem;
+    }
+
+    .info-card p {
+      font-size: 0.95rem;
+      color: #2d4b4f;
+    }
+
+    .info-card .icon-tag {
+      display: inline-block;
+      background: #c1e4e2;
+      color: #004f4f;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.1rem 0.6rem;
+      border-radius: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    /* 自然链接段落区 */
+    .natural-link-section {
+      background: #eaf3f3;
+      border-radius: 2rem;
+      padding: 2rem 2.2rem;
+      margin: 2.2rem 0 2.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      align-items: flex-start;
+      border: 1px solid #b3d1cf;
+    }
+
+    .link-text {
+      flex: 2;
+      min-width: 220px;
+    }
+
+    .link-text p {
+      font-size: 1.05rem;
+      color: #15393d;
+      margin-bottom: 0.5rem;
+    }
+
+    .link-text a {
+      color: #046a6e;
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+      font-weight: 500;
+      transition: color 0.2s, background 0.1s;
+      padding: 0.02rem 0.1rem;
+    }
+
+    .link-text a:hover {
+      color: #023f41;
+      background: #d1ecea;
+      border-radius: 0.2rem;
+    }
+
+    .link-highlight {
+      flex: 1;
+      min-width: 150px;
+      background: #ffffffb0;
+      border-radius: 1.2rem;
+      padding: 1.2rem 1.2rem;
+      border-left: 5px solid #2f918b;
+    }
+
+    .link-highlight strong {
+      color: #044e4e;
+      display: block;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* FAQ 摘要 */
+    .faq-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .faq-item {
+      background: #f8fcfd;
+      border-radius: 1.4rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #bdd6d4;
+    }
+
+    .faq-item dt {
+      font-weight: 600;
+      color: #0e5256;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+
+    .faq-item dd {
+      color: #2f5b5b;
+      font-size: 0.9rem;
+      margin-left: 0;
+    }
+
+    /* 适合人群 额外卡片 */
+    .audience-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      margin: 1.5rem 0 0.8rem;
+    }
+
+    .audience-pill {
+      background: #d5e9e8;
+      padding: 0.4rem 1.4rem;
+      border-radius: 3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #09474b;
+      border: 1px solid #87beb9;
+      box-shadow: inset 0 0 0 1px #ffffff44;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #597777;
+      border-top: 2px solid #c9dddd;
+      padding-top: 1.6rem;
+      margin-top: 1rem;
+    }
+
+    /* 响应式精细控制 */
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 1.8rem 1.5rem;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content p {
+        max-width: 100%;
+      }
+
+      .hero-card-symbol {
+        max-width: 140px;
+        margin: 0 auto;
+      }
+
+      .natural-link-section {
+        flex-direction: column;
+        padding: 1.5rem;
+      }
+
+      .link-highlight {
+        border-left: 4px solid #2f918b;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 0.8rem; }
+      .info-card { padding: 1.2rem; }
+      .faq-item { padding: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- 主视觉 hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>德州扑克 · 策略入口</h1>
+      <p>从规则到实战，稳定的信息与思考空间。面向所有对<a href="https://space-holdem.com" style="text-decoration:underline;color:#043e42;font-weight:500;">德州扑克游戏</a>感兴趣的玩家。</p>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-symbol">
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 用途卡片 grid -->
+  <div class="card-grid">
+    <div class="info-card">
+      <span class="icon-tag">📐 规则框架</span>
+      <h3>基础与进阶</h3>
+      <p>从手牌组合到位置意识，系统整理通用规则与常见变体，避免信息碎片。</p>
+    </div>
+    <div class="info-card">
+      <span class="icon-tag">🧠 策略思维</span>
+      <h3>决策逻辑</h3>
+      <p>概率计算、对手模型、底池赔率——用理性框架代替直觉反应，提升长期表现。</p>
+    </div>
+    <div class="info-card">
+      <span class="icon-tag">📊 场景模拟</span>
+      <h3>常见局面</h3>
+      <p>翻前加注与跟注范围、翻后下注尺度、短码策略，分解典型牌局场景。</p>
+    </div>
+    <div class="info-card">
+      <span class="icon-tag">🔄 持续更新</span>
+      <h3>内容沉淀</h3>
+      <p>社区笔记与术语表不断丰富，保持信息可追溯、可学习，适合反复查阅。</p>
+    </div>
+  </div>
+
+  <!-- 适合人群 标签式 -->
+  <div style="margin: 1.2rem 0 0.4rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;">
+    <span style="font-weight: 500; color: #0b4949; background: #ccdedd; padding: 0.1rem 1rem; border-radius: 2rem;">适合人群</span>
+    <div class="audience-cards" style="margin:0;">
+      <span class="audience-pill">入门玩家</span>
+      <span class="audience-pill">业余爱好者</span>
+      <span class="audience-pill">策略研究者</span>
+      <span class="audience-pill">牌局复盘者</span>
+    </div>
+  </div>
+
+  <!-- 自然链接段落（含唯一 a 标签） -->
+  <div class="natural-link-section">
+    <div class="link-text">
+      <p><strong>关于这个页面</strong> —— 这里围绕 <a href="https://space-holdem.com">德州扑克游戏</a> 提供结构化的参考信息，不强调速成或必胜，更看重逻辑与知识积累。每个模块都指向更完整的原文。</p>
+      <p>如果你希望系统了解手牌范围、翻后决策或比赛结构，可以以此为稳定入口。内容由爱好者整理，并持续根据社区反馈调整。</p>
+    </div>
+    <div class="link-highlight">
+      <strong>· 入口 ·</strong>
+      <p style="margin-top:0.5rem;color:#1b4d4d;">所有卡片与段落均关联到<a href="https://space-holdem.com" style="color:#013d3d;font-weight:600;text-decoration:underline;">德州扑克游戏</a>主站，保持一致的阅读路径。</p>
+    </div>
+  </div>
+
+  <!-- FAQ 摘要（非完整，仅展示风格） -->
+  <div style="margin-top:0.8rem;">
+    <h3 style="font-weight:500;color:#175a5a;font-size:1.1rem;border-bottom:2px solid #aacecb;padding-bottom:0.4rem;margin-bottom:0.6rem;">常见疑问摘要</h3>
+    <dl class="faq-summary">
+      <div class="faq-item">
+        <dt>这个站点适合新手吗？</dt>
+        <dd>基础规则部分有独立章节，术语也做了分类索引，新手可按顺序阅读。</dd>
+      </div>
+      <div class="faq-item">
+        <dt>内容更新频率？</dt>
+        <dd>策略类文章随环境变化不定期修订，术语表保持相对稳定。</dd>
+      </div>
+      <div class="faq-item">
+        <dt>是否有牌局记录工具？</dt>
+        <dd>主站提供基础复盘框架，但更侧重于概念解释而非软件工具。</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- 微脚注 -->
+  <div class="footer-note">
+    Space Holdem · 关于德州扑克的知识入口 · 信息卡片设计
+  </div>
+</div>
+</body>
+</html>
